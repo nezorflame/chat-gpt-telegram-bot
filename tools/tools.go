@@ -4,12 +4,14 @@
 //go:generate bash -c "go build -ldflags \"-X 'main.version=$(go list -m -f '{{.Version}}' github.com/golangci/golangci-lint)' -X 'main.commit=test' -X 'main.date=test'\" -o ../bin/golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint"
 //go:generate go build -o ../bin/gosimports github.com/rinchsan/gosimports/cmd/gosimports
 //go:generate go build -o ../bin/gofumpt mvdan.cc/gofumpt
+//go:generate go build -o ../bin/boltbrowser github.com/br0xen/boltbrowser
 
 // Package tools contains go:generate commands for all project tools with versions stored in local go.mod file
 // See https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
 package tools
 
 import (
+	_ "github.com/br0xen/boltbrowser"
 	_ "github.com/golang/mock/mockgen"
 	_ "github.com/golangci/golangci-lint/cmd/golangci-lint"
 	_ "github.com/rinchsan/gosimports/cmd/gosimports"

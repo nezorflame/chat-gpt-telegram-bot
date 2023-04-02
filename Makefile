@@ -1,4 +1,4 @@
-CMD:=example-telegram-bot
+CMD:=chat-gpt-telegram-bot
 MODULE:=github.com/nezorflame/$(CMD)
 PKG_LIST:=$(shell go list -f '{{.Dir}}' ./...)
 GIT_HASH?=$(shell git log --format="%h" -n 1 2> /dev/null)
@@ -15,6 +15,11 @@ BUILD_TS:=$(shell date +%FT%T%z)
 
 PWD:=$(PWD)
 export PATH:=$(PWD)/bin:$(PATH)
+# special case for macOS
+SHELL:=env PATH=$(PATH) /bin/bash
+DB_PATH:=$(PWD)/bolt.db
+
+.DEFAULT_GOAL = fast-build
 
 # install project dependencies
 .PHONY: deps
@@ -64,6 +69,12 @@ test-cover: deps
 	go test -v -coverprofile=coverage.out -race $(PKG_LIST)
 	go tool cover -func=coverage.out | grep total
 	rm -f coverage.out
+
+# run linter
+.PHONY: lint
+lint:
+	$(info #Running lint...)
+	golangci-lint run ./...
 	
 .PHONY: fast-build
 fast-build: deps 
@@ -86,8 +97,7 @@ tools:
 	$(info #Installing tools...)
 	cd tools && go generate -tags tools
 
-# run linter
-.PHONY: lint
-lint:
-	$(info #Running lint...)
-	golangci-lint run ./...
+# browse Bolt DB
+.PHONY: db
+db:
+	boltbrowser $(DB_PATH)

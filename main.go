@@ -10,9 +10,10 @@ import (
 
 	"golang.org/x/exp/slog"
 
-	"github.com/nezorflame/example-telegram-bot/internal/pkg/bolt"
-	"github.com/nezorflame/example-telegram-bot/internal/pkg/config"
-	"github.com/nezorflame/example-telegram-bot/pkg/telegram"
+	"github.com/nezorflame/chat-gpt-telegram-bot/internal/bolt"
+	"github.com/nezorflame/chat-gpt-telegram-bot/internal/bot"
+	"github.com/nezorflame/chat-gpt-telegram-bot/internal/chatgpt"
+	"github.com/nezorflame/chat-gpt-telegram-bot/internal/config"
 )
 
 // Config flags.
@@ -54,6 +55,7 @@ func main() {
 		Level:     slogLevel,
 	}
 	log := slog.New(slogOptions.NewTextHandler(os.Stdout))
+	log.Info("Launching the bot...")
 
 	// error reporting
 	var err error
@@ -78,7 +80,11 @@ func main() {
 	log.Info("Config parsed")
 
 	// init DB
-	db, err := bolt.New(cfg.GetString("db.path"), cfg.GetDuration("db.timeout"))
+	db, err := bolt.New(
+		cfg.GetString("db.path"),
+		cfg.GetDuration("db.timeout"),
+		log,
+	)
 	if err != nil {
 		err = fmt.Errorf("unable to init DB: %w", err)
 		return
@@ -86,8 +92,20 @@ func main() {
 	log.Info("DB initiated")
 	defer db.Close(false)
 
-	// create bot
-	bot, err := telegram.NewBot(cfg, log, slogLevel)
+	// init OpenAI client
+	chatGPT, err := chatgpt.New(
+		cfg.GetString("openai.token"),
+		cfg.GetString("openai.orgid"),
+		cfg.GetDuration("openai.timeout"),
+		log,
+	)
+	if err != nil {
+		err = fmt.Errorf("unable to init ChatGPT client: %w", err)
+		return
+	}
+
+	// create tgBot
+	tgBot, err := bot.New(cfg, log, slogLevel, chatGPT, db)
 	if err != nil {
 		err = fmt.Errorf("unable to create bot: %w", err)
 		return
@@ -102,9 +120,9 @@ func main() {
 
 	// start the bot
 	log.Info("Starting the bot")
-	bot.Start(ctx)
+	tgBot.Start(ctx)
 	log.Info("Started the bot, listening to the updates...")
-	defer bot.Stop()
+	defer tgBot.Stop()
 
 	// watch context and syscalls
 	select {

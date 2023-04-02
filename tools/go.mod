@@ -1,8 +1,9 @@
-module github.com/nezorflame/example-telegram-bot/tools
+module github.com/nezorflame/chat-gpt-telegram-bot/tools
 
 go 1.20
 
 require (
+	github.com/br0xen/boltbrowser v0.0.0-20210531150353-7f10a81cece0
 	github.com/golang/mock v1.6.0
 	github.com/golangci/golangci-lint v1.52.0
 	github.com/rinchsan/gosimports v0.3.8
@@ -27,7 +28,9 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.0 // indirect
 	github.com/blizzy78/varnamelen v0.8.0 // indirect
+	github.com/boltdb/bolt v1.3.1 // indirect
 	github.com/bombsimon/wsl/v3 v3.4.0 // indirect
+	github.com/br0xen/termbox-util v0.0.0-20170904143325-de1d4c83380e // indirect
 	github.com/breml/bidichk v0.2.4 // indirect
 	github.com/breml/errchkjson v0.3.1 // indirect
 	github.com/butuzov/ireturn v0.1.1 // indirect
@@ -110,6 +113,7 @@ require (
 	github.com/nbutton23/zxcvbn-go v0.0.0-20210217022336-fa2cb2858354 // indirect
 	github.com/nishanths/exhaustive v0.9.5 // indirect
 	github.com/nishanths/predeclared v0.2.2 // indirect
+	github.com/nsf/termbox-go v0.0.0-20180819125858-b66b20ab708e // indirect
 	github.com/nunnatsa/ginkgolinter v0.9.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect

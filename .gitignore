@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+__debug_bin
 
 # Test binary, build with `go test -c`
 *.test
@@ -24,3 +25,6 @@ config.toml
 debug
 .DS_Store
 *.db
+
+# Bot-specific config
+chat-gpt-telegram-bot.service

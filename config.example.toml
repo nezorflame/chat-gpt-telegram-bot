@@ -7,13 +7,24 @@ token = "YOUR:TELEGRAMBOTTOKEN"
 timeout = 60
 debug = false
 
+[openai]
+token = "your-openaitoken"
+orgid = "your-orgid"
+timeout = 60
+
 [commands]
-start = "/start"
-help = "/help"
+start = "start"
+new = "new"
+help = "help"
 
 [messages]
-hello = "Hello!"
 help = "I'm here to help!"
+
+[messages.chatgpt]
+new_chat_created = "New chat is created. ChatGPT is ready to talk!"
+new_chat_error = "Unable to create a new chat with ChatGPT! Please try again..."
+sent = "ChatGPT is thinking..."
+error = "Unable to get response from ChatGPT! Please try again..."
 
 [errors]
 unknown = "Unknown error! Please contact the developer!"

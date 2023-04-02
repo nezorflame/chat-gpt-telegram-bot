@@ -13,14 +13,21 @@ const (
 	defaultDBTimeout       = time.Second
 	defaultTelegramTimeout = 60
 	defaultTelegramDebug   = false
+	defaultOpenAITimeout   = 60 * time.Second
 )
 
 var mandatoryParams = []string{
 	"telegram.token",
+	"openai.token",
+	"openai.orgid",
 	"commands.start",
+	"commands.new",
 	"commands.help",
-	"messages.hello",
 	"messages.help",
+	"messages.chatgpt.new_chat_created",
+	"messages.chatgpt.new_chat_error",
+	"messages.chatgpt.sent",
+	"messages.chatgpt.error",
 	"errors.unknown",
 }
 
@@ -47,6 +54,7 @@ func New(name string) (*viper.Viper, error) {
 	cfg.SetDefault("db.timeout", defaultDBTimeout)
 	cfg.SetDefault("telegram.timeout", defaultTelegramTimeout)
 	cfg.SetDefault("telegram.debug", defaultTelegramDebug)
+	cfg.SetDefault("openai.timeout", defaultOpenAITimeout)
 
 	if err := validateConfig(cfg); err != nil {
 		return nil, fmt.Errorf("unable to validate config: %w", err)
